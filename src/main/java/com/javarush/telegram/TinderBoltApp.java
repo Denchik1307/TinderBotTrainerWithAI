@@ -58,7 +58,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                     "Том Харди \uD83D\uDE0E\uD83D\uDE0E", "date_hardy");
             return;
         }
-        if (currentMode == DialogMode.DATE && !isMessageCommand()) {
+        if (currentMode == DialogMode.DATE && !message.startsWith("/")) {
             String query = getCallbackQueryButtonKey();
             if (query.startsWith("date_")) {
                 sendPhotoMessage(query);
@@ -83,7 +83,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return;
         }
 
-        if (currentMode == DialogMode.MESSAGE && !isMessageCommand()) {
+        if (currentMode == DialogMode.MESSAGE && !message.startsWith("/")) {
             String query = getCallbackQueryButtonKey();
             if (query.startsWith("message_")) {
                 String userChatHistory = String.join("\n\n", list);
@@ -108,7 +108,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return;
         }
 
-        if (currentMode == DialogMode.PROFILE && !isMessageCommand()) {
+        if (currentMode == DialogMode.PROFILE && !message.startsWith("/")) {
             switch (questionCount) {
                 case 1:
                     me.age = message;
@@ -141,9 +141,9 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return;
         }
         //endregion
-        //region command OPENER
-        if (message.equals("/opener")) {
-            currentMode = DialogMode.OPENER;
+        //region command HELPER
+        if (message.equals("/helper")) {
+            currentMode = DialogMode.HELPER;
             sendPhotoMessage("opener");
             she = new UserInfo();
             questionCount = 1;
@@ -152,7 +152,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return;
         }
 
-        if (currentMode == DialogMode.OPENER && !isMessageCommand()) {
+        if (currentMode == DialogMode.HELPER && !message.startsWith("/")) {
             switch (questionCount) {
                 case 1:
                     she.name = message;
@@ -176,10 +176,9 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                     return;
                 case 5:
                     she.goals = message;
-                    String aboutFriend = message;
                     String prompt = loadPrompt("opener");
                     Message msg = sendTextMessage("Прикинем что можно написать...");
-                    String answer = chatGpt.sendMessage(prompt, aboutFriend);
+                    String answer = chatGpt.sendMessage(prompt, message);
                     updateTextMessage(msg, answer);
                     return;
             }
@@ -194,7 +193,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return;
         }
 
-        if (currentMode == DialogMode.GPT && !isMessageCommand()) {
+        if (currentMode == DialogMode.GPT && !message.startsWith("/")) {
             String prompt = loadPrompt("gpt");
             String answer = chatGpt.sendMessage(prompt, message);
             Message msg = sendTextMessage("chatGPT думает");
