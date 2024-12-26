@@ -7,4 +7,5 @@ public enum DialogMode {
     MESSAGE,
     DATE,
     GPT,
+    DEFAULT,
 }
